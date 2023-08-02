@@ -1,0 +1,75 @@
+
+:root{
+    color: hsla(0, 30%, 95%, 1);
+}
+
+nav{
+    display: flex;
+}
+
+.error{
+    font-size: .85rem;
+    color: red;
+}
+.profile_photo{
+    height: 250px;
+    width: auto;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+body{
+    background-color: hsla(189, 6%, 22%, 1);
+}
+
+h1, h2, h3, h4, h5, h6{
+    color: hsla(180, 47%, 56%, 1);
+}
+
+p, label{
+    color: hsla(0, 30%, 95%, 1);
+}
+button{
+    border: 2px solid hsla(37, 8%, 34%, 1);
+}
+
+button:hover{
+    cursor: pointer;
+    background-color: hsla(226, 69%, 63%, 1);
+    transition: background-color .15s ease-in;
+}
+
+.auto-center-flex {
+    @apply flex justify-start items-center;
+}
+.error-placeholder-color::placeholder {
+    @apply text-red-500; /* Replace with the desired Tailwind color class */
+}
+
+
+input{
+    color: hsla(189, 6%, 22%, 1) !important;
+}
+
+.left_text{
+    text-align: left !important;
+}
+
+.global-btn-styling{
+    background-color: hsla(180, 47%, 56%, 1) !important;
+    border-radius: 10px;
+    border: hsla(37, 8%, 34%, 1) solid 2px;
+}
+.global-btn-styling:hover{
+    cursor: pointer;
+}
+
+/*--robin-egg-blue: hsla(180, 47%, 56%, 1);*/
+/*--glaucous: hsla(226, 69%, 63%, 1);*/
+/*--walnut-brown: hsla(37, 8%, 34%, 1);*/
+/*--snow: hsla(0, 30%, 95%, 1);*/
+/*--onyx: hsla(189, 6%, 22%, 1);*/
