@@ -1,7 +1,8 @@
 import {useState} from "react";
 
-export default function SetLanguages({setViewState, setUserInformation}) {
+export default function SetLanguages({setViewState, setUserInformation, userInformation}) {
     const [selectedLanguages, setSelectedLanguages] = useState([])
+    const [errors, setErrors] = useState(false)
     const languages = [
         "C++",
         "C",
@@ -27,6 +28,12 @@ export default function SetLanguages({setViewState, setUserInformation}) {
 
     const proceedToNextPage = (e) => {
         e.preventDefault()
+        if(selectedLanguages.length < 1 ){
+            setErrors(true)
+            return
+        } else {
+            setErrors(false)
+        }
         setUserInformation((prev)=> ({
         ...prev,
         languages: selectedLanguages
@@ -66,7 +73,9 @@ export default function SetLanguages({setViewState, setUserInformation}) {
             <h2>Please select the languages that you are familiar with or want to learn more about</h2>
             <p>(If you don't see your language here, you can add it manually on your home page)</p>
             <h3>Next we'll move onto frameworks and libraries</h3>
+
             <section className="language-selects absolute mx-auto translate-y-6" >
+                {errors && <p className="text-red-600" >Please select one option you're familiar with or have interest in learning</p>}
                 {selectedLanguages.map((lang, index) => (
                     <p key={index} className="">{lang}{
                         index !== selectedLanguages.length - 1 && selectedLanguages.length > 1 ? "," : ''
@@ -74,11 +83,10 @@ export default function SetLanguages({setViewState, setUserInformation}) {
                 ))
                 }
             </section>
-
             <section className='languages-grid' onClick={addToLanguages}>
                 {languages.map((lang, index) => (
                     <div key={index} data-value={lang} className="language-select flex items-center justify-center">
-                        <p className="language-text">{lang}</p>
+                        <p className="language-text" onClick={()=>setErrors(false)}>{lang}</p>
                     </div>
                 ))
                 }

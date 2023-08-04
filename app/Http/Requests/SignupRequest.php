@@ -23,16 +23,22 @@ class SignupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max: 10', 'string', 'alpha'],
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-            'password_confirmation' => ['same:password', 'required']
+            'user_name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'about_me' => ['max:250', 'nullable'],
+            'github' => ['nullable', 'max:255'],
+            'linkedin' => ['nullable', 'max:255'],
+            'instagram' => ['nullable', 'max:255'],
+            'profile_picture' => ['image', 'nullable'],
+            'password' => ['required', 'max:255'],
+            'password_confirmation' => ['same:password', 'required', 'max:255']
+
 //
         ];
     }
     public function messages(){
         return [
-            'name' => 'name must be less than ten letters long with no symbols',
+            'user_name' => 'name must be less than ten letters long with no symbols',
             'password' => 'must give a password',
             'password_confirmation' => 'passcodes do not match',
             'email' => 'email is not valid'

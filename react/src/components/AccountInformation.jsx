@@ -1,8 +1,45 @@
 import {useRef, useState} from "react";
+import axiosClient from "../services/axios-client.js";
+import ErrorList from "./ErrorList.jsx";
 
-export default function AccountInformation({setUserInformation, setViewState}) {
-    const [profilePhoto, setProfilePhoto] = useState(null)
-    // const [githubPlaceholder, setGitHub]
+export default function AccountInformation({setUserInformation, setViewState, userInformation}) {
+    const [errors, setErrors] = useState([]);
+
+    const handleUserNameChange = async(e, input) => {
+        e.preventDefault();
+        const inputValue = input
+        const payload = {
+            value: inputValue,
+            parameter: 'user_name'
+        }
+        try{
+
+            const response = await axiosClient.post('/check_variable', payload);
+            if(response.data === 'unavailable'){
+                setErrors(['This User Name is already chosen, please choose another']);
+                setUserInformation((prev)=> {
+                    const newState = {...prev}
+                    delete newState.user_name
+                    return newState
+                })
+            } else {
+                // setUserInformation(prev => ({...prev, user_name: userNameRef.current.value}));
+                console.log('user name available')
+            }
+
+        } catch(error){
+            console.error(error)
+        }
+    }
+
+    const handleUserNameInput = () => {
+        setErrors([]);
+        setUserInformation((prev) => ({
+            ...prev, user_name: userNameRef.current.value
+        }))
+    }
+
+    //FORGOT TO USE THIS, CAN PROBABLY REMOVE
     const profileImgRef = useRef();
     const userNameRef = useRef();
     const aboutMeRef = useRef();
@@ -14,8 +51,7 @@ export default function AccountInformation({setUserInformation, setViewState}) {
         const file = e.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            setProfilePhoto(imageUrl)
-            setUserInformation(prev => ({...prev, profile_image: file}))
+            setUserInformation(prev => ({...prev, profile_picture: file, profile_img_temp: imageUrl}))
         }
     }
 
@@ -24,25 +60,42 @@ export default function AccountInformation({setUserInformation, setViewState}) {
         if(inputElement.value === ''){
             return
         }
-        const regexPattern = `${value}\.com`;
+
+        const regexPattern = `${value}.com`;
         const regex = new RegExp(regexPattern);
-        const url = e.target.value;
+        const url = e.target.value.toLowerCase();
 
         if (!regex.test(url)) {
-            console.log(`The string does not contain ${value}.com`);
             inputElement.value = ''
             inputElement.classList.add('error-placeholder-color')
             inputElement.placeholder = `Not a valid ${value} page`;
+
+            if(userInformation[value]){
+                setUserInformation((prev)=> {
+                    const newState = {...prev}
+                    delete newState[value]
+                    return newState
+                })
+            }
 
             setTimeout(()=> {
             inputElement.classList.remove('error-placeholder-color')
             inputElement.placeholder = `Enter ${value} url to share`;
             }, 3000)
         } else {
-            setUserInformation(prev => ({...prev, instagram: inputElement.value}));
+            setUserInformation(prev => ({...prev, [value]: inputElement.value}));
 
         }
     };
+
+    const handleProceed = (e) => {
+        e.preventDefault()
+        if(userNameRef.current.value){
+            setTimeout(setViewState('registration'), 200)
+
+        }
+    }
+
 
 
     return (
@@ -51,8 +104,8 @@ export default function AccountInformation({setUserInformation, setViewState}) {
             <section className="grid grid-cols-2 gap-y-12 justify-self-auto grid-rows-registration_user_rows">
                 <div className='add-image-container flex flex-col'>
                     {
-                        profilePhoto ? (
-                            <img src={profilePhoto} className="self-center max-w-sm h-auto rounded-full"/>
+                        userInformation.profile_img_temp ? (
+                            <img src={userInformation.profile_img_temp} className="self-center max-w-sm h-auto rounded-full"/>
                         ) : (
                             <img src='/no_photo.png' className="self-center max-w-sm h-auto rounded-full"/>
                         )
@@ -68,14 +121,17 @@ export default function AccountInformation({setUserInformation, setViewState}) {
                 <div className='about_me_text flex flex-col text-left'>
                     <label htmlFor='user_name' className=''>Please enter a user name for your profile (required)</label>
                     <input id='user_name' name='user_name' type="text" className="text-zinc-950 self-start"
+                           value={userInformation.user_name ?? ''}
                            ref={userNameRef}
-                           onChange={() => {
-                               setUserInformation(prev => ({...prev, user_name: userNameRef.current.value}));
-                           }}/>
+                           onChange={handleUserNameInput}
+                           onBlur={(e)=>handleUserNameChange(e, e.target.value)}
+                    />
                     <br/>
+                    <ErrorList errors={errors}/>
 
                     <label htmlFor='about_me' className='text-left'>About Me</label>
                     <textarea rows='3' cols='30' className="text-zinc-950" ref={aboutMeRef}
+                              value={userInformation.about_me ?? ''}
                               onChange={() => {
                                   setUserInformation(prev => ({...prev, about_me: aboutMeRef.current.value}));
                               }}
@@ -84,6 +140,8 @@ export default function AccountInformation({setUserInformation, setViewState}) {
                         <img id="github-input" src='/github_logo.svg' className="w-14 h-auto"/>
                         <input type='url' data-url="github" className="text-black-500"
                                placeholder='Enter github url to share' ref={gitHubRef}
+                               value={userInformation.github ?? ''}
+                               onChange={(e)=>setUserInformation(prev => ({...prev, github: e.target.value}))}
                                onBlur={(e) => handleURLChange(e, e.target.getAttribute('data-url'))}
                         />
                     </div>
@@ -93,6 +151,8 @@ export default function AccountInformation({setUserInformation, setViewState}) {
                         <img src='/linkedin_logo.svg' className="w-14 h-auto"/>
                         <input id="linkedIn-input" data-url="linkedin" type='url' className="text-black-500"
                                placeholder='Enter github url to share' ref={linkedinRef}
+                               value={userInformation.linkedin ?? ''}
+                               onChange={(e)=>setUserInformation(prev => ({...prev, linkedin: e.target.value}))}
                                onBlur={(e) => handleURLChange(e, e.target.getAttribute('data-url'))}
                         />
                     </div>
@@ -101,19 +161,23 @@ export default function AccountInformation({setUserInformation, setViewState}) {
                     <div className="mt-5 auto-center-flex">
                         <img id="instagram-input" src='/instagram_logo.svg' className="w-14 h-auto"/>
                         <input type='url' data-url="instagram" className="text-black-500"
+                               value={userInformation.instagram ?? ''}
                                placeholder='Enter github url to share' ref={instagramRef}
+                               onChange={(e)=>setUserInformation(prev => ({...prev, instagram: e.target.value}))}
                                onBlur={(e) => handleURLChange(e, e.target.getAttribute('data-url'))}
                         />
                     </div>
                 </div>
-
-                <button
-                    className="cursor-pointer transition-all duration-100 hover:bg-hover-blue col-span-2 rounded-lg border-white border-2 m-auto w-54 h-22 flex items-center justify-center"
-                    onClick={()=>setViewState('registration')}
-                    >
-                    Continue
-                </button>
-
+                <div className="flex col-span-2 m-auto items-center justify-center" >
+                    <button className="cursor-pointer transition-all duration-100 hover:bg-hover-blue rounded-lg border-white border-2 w-54 h-22"
+                        onClick={()=>setViewState('setLanguages')}>Go Back</button>
+                    <button
+                        className="cursor-pointer transition-all duration-100 hover:bg-hover-blue rounded-lg border-white border-2 w-54 h-22"
+                        onClick={(e) => handleProceed(e)}
+                        >
+                        Continue
+                    </button>
+                </div>
             </section>
         </>
     )

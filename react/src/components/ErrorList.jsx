@@ -1,9 +1,9 @@
 export default function ErrorList({ errors }) {
     return (
-        <div>
+        <ul className="absolute error-list-ul" >
             {errors.map((err, index) => (
-                <p key={index} className='error'>{err}</p>
+                <li key={index} className='error text-red-500'>{err}</li>
             ))}
-        </div>
+        </ul>
     );
 }

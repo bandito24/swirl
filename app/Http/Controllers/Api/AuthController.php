@@ -11,20 +11,51 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+
 class AuthController extends Controller
 {
 
     public function signup(SignupRequest $request)
     {
+
         $data = $request->validated();
+
+        $defaults = [
+            'github' => null,
+            'linkedin' => null,
+            'instagram' => null,
+            'about_me' => null,
+        ];
+
+        $languages = $data['languages'];
+        unset($data['languages']);
+
+        $attributes = array_merge($defaults, $data);
+
         /** @var User $user */
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
+            'user_name' => $attributes['user_name'],
+            'email' => $attributes['email'],
+            'password' => bcrypt($attributes['password']),
+            'profile_picture' => $attributes['profile_picture'],
+            'github' => $attributes['github'],
+            'linkedin' => $attributes['linkedin'],
+            'instagram' => $attributes['instagram'],
+            'about_me' => $attributes['about_me'],
         ]);
+
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
+
+
+//        /** @var User $user */
+//        $user = User::create([
+//            'user_name' => $data['user_name'],
+//            'email' => $data['email'],
+//            'password' => bcrypt($data['password'])
+//        ]);
+//        $token = $user->createToken('main')->plainTextToken;
+//        return response(compact('user', 'token'));
     }
 
     public function signin(LoginRequest $request)
