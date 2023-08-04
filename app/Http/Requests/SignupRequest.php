@@ -32,8 +32,7 @@ class SignupRequest extends FormRequest
             'profile_picture' => ['image', 'nullable'],
             'password' => ['required', 'max:255'],
             'password_confirmation' => ['same:password', 'required', 'max:255']
-
-//
+            
         ];
     }
     public function messages(){

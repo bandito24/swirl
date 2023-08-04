@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\PatchRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +19,9 @@ class AuthController extends Controller
     public function signup(SignupRequest $request)
     {
 
+        $languages = $request['languages'];
+        unset($request['languages']);
+
         $data = $request->validated();
 
         $defaults = [
@@ -25,14 +29,15 @@ class AuthController extends Controller
             'linkedin' => null,
             'instagram' => null,
             'about_me' => null,
+            'profile_picture' => null
         ];
 
-        $languages = $data['languages'];
-        unset($data['languages']);
+//        $languages = $data['languages'];
+//        unset($data['languages']);
 
         $attributes = array_merge($defaults, $data);
 
-        /** @var User $user */
+
         $user = User::create([
             'user_name' => $attributes['user_name'],
             'email' => $attributes['email'],
@@ -47,8 +52,7 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
         return response(compact('user', 'token'));
 
-
-//        /** @var User $user */
+        /** @var User $user */
 //        $user = User::create([
 //            'user_name' => $data['user_name'],
 //            'email' => $data['email'],
@@ -56,6 +60,7 @@ class AuthController extends Controller
 //        ]);
 //        $token = $user->createToken('main')->plainTextToken;
 //        return response(compact('user', 'token'));
+
     }
 
     public function signin(LoginRequest $request)

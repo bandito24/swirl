@@ -1,12 +1,14 @@
 import {useRef, useState} from "react";
 import axiosClient from "../services/axios-client.js";
 import ErrorList from "./ErrorList.jsx";
+import {useStateContext} from "../../contexts/contextProvider.jsx";
 
 export default function Registration({setViewState, setUserInformation, userInformation}) {
     const [errors, setErrors] = useState([]);
     const emailRef = useRef();
     const passwordRef = useRef();
     const confPasswordRef = useRef();
+    const {setUser, setToken} = useStateContext()
 
     const handleEmailInput = (e) => {
         setUserInformation(prev => ({
@@ -65,6 +67,12 @@ export default function Registration({setViewState, setUserInformation, userInfo
                     ...prev, password: 'Your confirmation password does not match'
                 }
             ))
+            return;
+        }
+        if(passwordRef.current.value === confPasswordRef.current.value){
+            setUserInformation(prev => ({
+                ...prev, password: passwordRef.current.value, password_confirmation: confPasswordRef.current.value
+            }))
         }
     }
 
@@ -76,9 +84,18 @@ export default function Registration({setViewState, setUserInformation, userInfo
                 return newState
             })
         }
+        if (userInformation.password && userInformation.password_confirmation) {
+            setErrors(prev => {
+                const newState = {...prev}
+                delete newState.password
+                delete newState.password_confirmation
+                return newState
+            })
+        }
+
     }
 
-    const handleCreateUser = (e) => {
+    const handleCreateUser = async(e) => {
         e.preventDefault()
         if (passwordRef.current.value !== confPasswordRef.current.value || !passwordRef.current.value || !confPasswordRef.current.value) {
             setErrors(prev => ({
@@ -87,12 +104,24 @@ export default function Registration({setViewState, setUserInformation, userInfo
             ))
             return
         }
-        if(Object.keys(errors).length === 0){
-            setUserInformation(prev => ({
-                ...prev, password: passwordRef, password_confirmation: confPasswordRef
-            }))
-            console.log(userInformation)
+        // if(Object.keys(errors).length === 0){
+        //     setUserInformation(prev => ({
+        //         ...prev, password: passwordRef.current.value, password_confirmation: confPasswordRef.current.value
+        //     }))
+        // }
+        try{
+            const response = await axiosClient.post('/signup', userInformation,
+                {
+                    headers: {'Content-Type': 'multipart/form-data'}
+                })
+            setUser(response.data.user)
+            setToken(response.data.token)
+            console.log(response.data)
+
+        }catch(error){
+            console.error(error.response)
         }
+
     }
 
 
