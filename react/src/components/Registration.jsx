@@ -104,11 +104,7 @@ export default function Registration({setViewState, setUserInformation, userInfo
             ))
             return
         }
-        // if(Object.keys(errors).length === 0){
-        //     setUserInformation(prev => ({
-        //         ...prev, password: passwordRef.current.value, password_confirmation: confPasswordRef.current.value
-        //     }))
-        // }
+
         try{
             const response = await axiosClient.post('/signup', userInformation,
                 {
@@ -116,10 +112,8 @@ export default function Registration({setViewState, setUserInformation, userInfo
                 })
             setUser(response.data.user)
             setToken(response.data.token)
-            console.log(response.data)
-
         }catch(error){
-            console.error(error.response)
+            console.error(error)
         }
 
     }

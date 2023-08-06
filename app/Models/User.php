@@ -83,6 +83,15 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $with = ['languages'];
+
+
+
+    public function languages(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Language::class, 'user_languages', 'user_id', 'language_id');
+    }
+
     /**
      * The attributes that should be cast.
      *
@@ -92,8 +101,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-    public function languages(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(Language::class);
-    }
+
 }

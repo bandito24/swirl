@@ -33,8 +33,7 @@ export default function Logout() {
     <>
     <form onSubmit={onLogout}>
         <h1>click here to log out</h1>
-        <input type='submit' value='logout'/>
-        {console.log(user, token)}
+        <input type='submit' value='logout' className="global-btn-styling mt-8 w-20 h-10" />
     </form>
     </>
     )

@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 export default function SetLanguages({setViewState, setUserInformation, userInformation}) {
-    const [selectedLanguages, setSelectedLanguages] = useState([])
+    const [selectedLanguages, setSelectedLanguages] = useState(userInformation.languages ?? [])
     const [errors, setErrors] = useState(false)
     const languages = [
         "C++",
@@ -85,7 +85,13 @@ export default function SetLanguages({setViewState, setUserInformation, userInfo
             </section>
             <section className='languages-grid' onClick={addToLanguages}>
                 {languages.map((lang, index) => (
-                    <div key={index} data-value={lang} className="language-select flex items-center justify-center">
+                    <div key={index} data-value={lang}
+                         style={
+                        Object.keys(userInformation).length > 0 && userInformation.languages.includes(lang)
+                             ? { backgroundColor: 'hsla(180, 47%, 56%, .5)' }
+                             : {}
+                         }
+                         className="language-select flex items-center justify-center">
                         <p className="language-text" onClick={()=>setErrors(false)}>{lang}</p>
                     </div>
                 ))

@@ -30,4 +30,5 @@ class UserLanguage extends Model
 
 
     protected $guarded = [];
+
 }

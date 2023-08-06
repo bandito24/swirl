@@ -30,8 +30,8 @@ class Language extends Model
 {
     use HasFactory;
 
-    public function user(){
-        return $this->belongsToMany(User::class);
+    public function users(){
+        return $this->belongsToMany(User::class, 'user_languages', 'language_id', 'user_id');
     }
     protected $guarded = [];
 }

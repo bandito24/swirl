@@ -52,13 +52,13 @@ class DatabaseSeeder extends Seeder
         }
         $randLanguage = rand(1, count($languages));
 
-        for($i = 0; $i < 100; $i++){
-            $randLanguage = rand(1, count($languages));
-            UserLanguage::factory()->create([
-                'language_id' => $randLanguage,
-                'user_id' => User::factory()
-            ]);
-        }
+//        for($i = 0; $i < 100; $i++){
+//            $randLanguage = rand(1, count($languages));
+//            UserLanguage::factory()->create([
+//                'language_id' => $randLanguage,
+//                'user_id' => User::factory()
+//            ]);
+//        }
 
 
 

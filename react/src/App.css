@@ -62,7 +62,8 @@ button:hover{
 }
 
 
-input{
+
+input, textarea{
     color: hsla(189, 6%, 22%, 1) !important;
 }
 
@@ -78,6 +79,15 @@ input{
 .global-btn-styling:hover{
     cursor: pointer;
 }
+
+.dashboard-grid{
+    @apply grid gap-4;
+    grid-template-columns: 2fr 1fr;
+}
+
+
+
+
 
 /*--robin-egg-blue: hsla(180, 47%, 56%, 1);*/
 /*--glaucous: hsla(226, 69%, 63%, 1);*/
