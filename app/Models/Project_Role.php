@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Project_Role extends Model
 {
     use HasFactory;
+
+    protected $table = 'project_roles';
+
+    protected $guarded = [];
 }

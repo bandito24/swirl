@@ -33,5 +33,8 @@ class Language extends Model
     public function users(){
         return $this->belongsToMany(User::class, 'user_languages', 'language_id', 'user_id');
     }
+    public function projects(){
+        return $this->belongsToMany(Project::class, 'project_languages', 'language_id', 'project_id');
+    }
     protected $guarded = [];
 }

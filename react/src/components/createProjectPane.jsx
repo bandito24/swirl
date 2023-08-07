@@ -52,34 +52,39 @@ export default function CreateProjectPane() {
 
     const handleCreateProject = async (e) => {
         e.preventDefault();
+        let errorPresent = false
 
         if (projectNameRef.current.value === '') {
             if (!errors.includes(nameError)) {
                 addToStateArray(setErrors, nameError)
             }
+            errorPresent = true;
         }
         if (projectDescriptionRef.current.value === '') {
             if (!errors.includes(descriptionError)) {
                 addToStateArray(setErrors, descriptionError)
             }
+            errorPresent = true;
         }
         if (projectLanguages.length < 1) {
             if (!errors.includes(languagesError)) {
                 addToStateArray(setErrors, languagesError)
             }
+            errorPresent = true;
         }
         if (roles.length < 1) {
             if (!errors.includes(roleError)) {
                 addToStateArray(setErrors, roleError)
             }
+            errorPresent = true;
         }
-        if (errors.length < 1) {
+        if (!errorPresent) {
            try{
                const payload = {
                    creator_id: user.id,
                    project_name: projectNameRef.current.value,
                    project_description: projectDescriptionRef.current.value,
-                   project_languages: languages,
+                   project_languages: projectLanguages,
                    project_roles: roles
                }
                const response = await axiosClient.post('/create_project', payload)
@@ -88,10 +93,7 @@ export default function CreateProjectPane() {
            }catch(error){
                console.error(error.response.data)
            }
-        } else {
-            console.log('yo')
         }
-
     }
 
     return (

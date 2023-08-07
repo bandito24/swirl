@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('project_languages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('creator_id');
+            $table->foreignId('project_id');
             $table->foreignId('language_id');
             $table->timestamps();
         });

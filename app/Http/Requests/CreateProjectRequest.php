@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Exists;
 
 class CreateProjectRequest extends FormRequest
 {
@@ -24,8 +25,9 @@ class CreateProjectRequest extends FormRequest
         return [
             'creator_id' => ['integer'],
             'project_name' => ['max:255', 'required'],
-            'project_description' => ['required']
-
+            'project_description' => ['required'],
+            'project_roles.*' => ['string', 'required', 'max:255'],
+            'project_languages.*' => ['exists:languages,name']
         ];
     }
 }

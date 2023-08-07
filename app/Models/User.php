@@ -91,6 +91,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Language::class, 'user_languages', 'user_id', 'language_id');
     }
+    public function projects(){
+        return $this->hasMany(Project::class, 'creator_id');
+    }
 
     /**
      * The attributes that should be cast.
