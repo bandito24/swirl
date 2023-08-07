@@ -1,7 +1,7 @@
 
 import axiosClient from "../services/axios-client.js";
 import {useStateContext} from "../../contexts/contextProvider.jsx";
-import CreateProjectPane from "../components/create_project_pane.jsx";
+import CreateProjectPane from "../components/createProjectPane.jsx";
 
 
 
