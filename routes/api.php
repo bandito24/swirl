@@ -22,14 +22,16 @@ Route::middleware('auth:sanctum')->group(function(){
         return $request->user();
     });
 
-    Route::post('/create_project', [ProjectController::class, 'create']);
+    Route::post('/create_project', [ProjectController::class, 'store']);
+
 
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::patch('/patch', [AuthController::class, 'patch']);
 });
 
-
+Route::get('/show_all_projects', [ProjectController::class, 'index']);
+Route::get('/project/{slug}', [ProjectController::class, 'show']);
 
 
 Route::post('/signup', [AuthController::class, 'signup']);

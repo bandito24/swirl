@@ -1,22 +1,20 @@
-
-import axiosClient from "../services/axios-client.js";
 import {useStateContext} from "../../contexts/contextProvider.jsx";
 import CreateProjectPane from "../components/createProjectPane.jsx";
+import ShowProjects from "../components/ShowProjects.jsx";
+import {useState} from "react";
 
 
 
 export default function Dashboard() {
-    const {user, token} = useStateContext()
+    const [addedProject, setAddedProject] = useState(0)
 
 
 
     return(
         <>
         <div className="dashboard-grid"  >
-           <CreateProjectPane />
-            <div className="border-2 border-white">
-                <h1>hello there you son of a bitsdfch</h1>
-            </div>
+           <CreateProjectPane setAddedProject={setAddedProject}/>
+            <ShowProjects addedProject={addedProject}/>
         </div>
 
 

@@ -26,8 +26,8 @@ class CreateProjectRequest extends FormRequest
             'creator_id' => ['integer'],
             'project_name' => ['max:255', 'required'],
             'project_description' => ['required'],
-            'project_roles.*' => ['string', 'required', 'max:255'],
-            'project_languages.*' => ['exists:languages,name']
+            'projectRoles.*' => ['string', 'required', 'max:255'],
+            'projectLanguages.*' => ['exists:languages,name']
         ];
     }
 }

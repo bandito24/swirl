@@ -11,7 +11,7 @@ export default function Introduction({setViewState}) {
         <div id='select-options'>
             <button id='guest' value='Explore as Guest'>Explore as Guest</button>
             <button id='sign-up' value='Sign Up' onClick={() => navigate('/SignUp')}>Sign Up</button>
-            <button id='sign-in' value='Sign In'>Sign iIn</button>
+            <button id='sign-in' value='Sign In' onClick={() => navigate('/SignIn')}>Sign In</button>
         </div>
     </>
     )

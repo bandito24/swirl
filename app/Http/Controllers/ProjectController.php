@@ -5,35 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProjectRequest;
 use App\Models\Language;
 use App\Models\Project;
-use App\Models\Project_language;
-use App\Models\Project_Role;
+use App\Models\ProjectLanguage;
+use App\Models\ProjectRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
-    public function create(CreateProjectRequest $request){
+    public function store(CreateProjectRequest $request){
         $project = null;
         DB::transaction(function () use ($request, &$project) {
 //
             $attributes = $request->validated();
 
-            $project_roles = $attributes['project_roles'];
-            unset($attributes['project_roles']);
-            $project_languages = $attributes['project_languages'];
-            unset($attributes['project_languages']);
+            $projectRoles = $attributes['projectRoles'];
+            unset($attributes['projectRoles']);
+            $projectLanguages = $attributes['projectLanguages'];
+            unset($attributes['projectLanguages']);
 
             $project = Project::create($attributes);
 
-            foreach ($project_roles as $role) {
-                Project_Role::create([
+            foreach ($projectRoles as $role) {
+                ProjectRole::create([
                     'role'       => $role,
                     'project_id' => $project->id
                 ]);
             }
-            foreach($project_languages as $language){
+            foreach($projectLanguages as $language){
                 $languageModel = Language::where('name', $language)->first();
-                Project_language::create([
+                ProjectLanguage::create([
                     'project_id' => $project->id,
                     'language_id' => $languageModel->id
                 ]);
@@ -45,4 +45,16 @@ class ProjectController extends Controller
         return response(compact('project'));
 
     }
+    public function index(){
+        $projects = Project::orderBy('created_at', 'desc')->get();
+        return response(compact('projects'));
+    }
+    public function show($slug){
+        $project = Project::where('slug', $slug)->firstOrFail();
+        $project->load('creator');
+        $project->load('roles.user');
+
+        return response(compact('project'));
+    }
+
 }

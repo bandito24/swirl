@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('creator_id');
             $table->string('project_name');
+            $table->string('slug');
             $table->text('project_description');
             $table->boolean('completed')->default(false);
             $table->timestamps();

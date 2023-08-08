@@ -6,7 +6,7 @@ import {addToStateArray, removeFromStateArray} from "../functions/useStateFuntio
 import {useStateContext} from "../../contexts/contextProvider.jsx";
 import axiosClient from "../services/axios-client.js";
 
-export default function CreateProjectPane() {
+export default function CreateProjectPane({setAddedProject}) {
     const [roles, setRoles] = useState([]);
     const [roleValue, setRoleValue] = useState('')
     const [projectLanguages, setProjectLanguages] = useState([])
@@ -84,11 +84,12 @@ export default function CreateProjectPane() {
                    creator_id: user.id,
                    project_name: projectNameRef.current.value,
                    project_description: projectDescriptionRef.current.value,
-                   project_languages: projectLanguages,
-                   project_roles: roles
+                   projectLanguages: projectLanguages,
+                   projectRoles: roles
                }
                const response = await axiosClient.post('/create_project', payload)
                console.log(response)
+               setAddedProject(prev => prev + 1)
 
            }catch(error){
                console.error(error.response.data)

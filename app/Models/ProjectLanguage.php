@@ -5,11 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Project_Role extends Model
+class ProjectLanguage extends Model
 {
     use HasFactory;
-
-    protected $table = 'project_roles';
-
     protected $guarded = [];
 }
+

@@ -15,6 +15,9 @@ export default {
         backgroundColor: {
             'hover-blue': 'hsla(180, 47%, 56%, 1)'
         },
+        borderColor: { // <-- Use this key
+            'hover-blue': 'hsla(180, 47%, 56%, 1)'
+        },
     },
   },
   plugins: [],

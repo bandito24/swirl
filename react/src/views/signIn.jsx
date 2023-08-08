@@ -29,23 +29,23 @@ export default function SignIn() {
         try {
             const response = await axiosClient.post('/signin', payload);
 
-            if (response && response.status === 200) {
+
                 console.log(response.status)
                 const {data} = response;
                 setUser(data.user);
                 setToken(data.token);
-            }
-        } catch (error) {
-            if (error.response.status === 401) {
-                console.log(error)
-                const response = error.response
-                setError(response.data.messages)
 
-            } else if (error.response.status === 422) {
+        } catch (error) {
+            if (error.response.status === 422) {
                 console.log(error)
                 const response = error.response
-                setError(response.data.messages)
+                setError(response.data.message)
+
+            } else {
+                setError('Something went wrong, please try again later')
             }
+
+
         } finally {
             setIsLoading(false);
         }
@@ -62,10 +62,10 @@ export default function SignIn() {
                 <br/>
                 <input ref={passwordRef} type='text' name='password' placeholder='password'/>
                 <br/>
-                <input type='submit' value='Sign In'/>
+                <input type='submit' className='global-btn-styling' value='Sign In'/>
                     {isLoading && <p>Loading...</p>}
             </form>
-            <Link to='/signup'>Don't have an account?</Link>
+            <Link className='global-btn-styling' to='/signup'>Don't have an account?</Link>
         </>
     )
 }
