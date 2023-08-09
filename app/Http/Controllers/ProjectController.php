@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\ProjectLanguage;
 use App\Models\ProjectRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
@@ -55,6 +56,17 @@ class ProjectController extends Controller
         $project->load('roles.user');
 
         return response(compact('project'));
+    }
+
+    public function indexByUserLanguage(Request $request){
+        $languages = Auth::user()->languages;
+
+        $userLanguageProjects = Project::filterByLanguages($languages)
+            ->limit(100)
+            ->paginate(25);
+
+        $userLanguageProjects->load('languages');
+        return response(compact('userLanguageProjects'));
     }
 
 }

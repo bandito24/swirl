@@ -1,13 +1,16 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../services/axios-client.js";
-import {extractLanguageNames} from "../functions/returnLanguages.js";
-import {extractRoleNames} from "../functions/returnRoles.js";
 import {useParams} from "react-router-dom";
+import Role from "../components/Role.jsx";
+import ProjectView from "../components/ProjectView.jsx";
 
 
 
 export default function Project() {
     const [projectData, setProjectData] = useState();
+    const [roles, setRoles] = useState([]);
+    const [creator, setCreator] = useState(null)
+    const [contentLoaded, setContentLoaded] = useState(false)
     const { slug } = useParams();
 
     useEffect(() => {
@@ -15,7 +18,11 @@ export default function Project() {
         try{
             const response = await axiosClient.get(`/project/${slug}`)
             console.log(response.data.project);
-            setProjectData(response.data.project)
+            const currentProject = response.data.project;
+            setProjectData(currentProject)
+            setRoles(currentProject.roles)
+            setCreator(currentProject.creator)
+            setContentLoaded(true)
         } catch(error){
             console.error(error)
         }
@@ -23,23 +30,23 @@ export default function Project() {
         fetchProject()
     }, [slug])
 
-    // const roles = projectData.roles
-    // console.log(roles);
-
-
     return(
         <>
-            <p>hi</p>
-            {/*<div className="border-2 border-white">*/}
-            {/*    <h1 className="text-2xl" >My Created Projects: </h1>*/}
-            {/*    {projects && projects.map((project) => (*/}
-            {/*        <div key={project.id} className="rounded-md border w-3/4 inline-flex my-2 justify-center border-hover-blue flex-col" >*/}
-            {/*            <p className="border-b border-gray-400 w-3/4 m-auto" >Name: {project.project_name}</p>*/}
-            {/*            <p>Languages: {extractLanguageNames(project)}</p>*/}
-            {/*            <p>Roles: {extractRoleNames(project)}</p>*/}
-            {/*        </div>*/}
-            {/*    ))}*/}
-            {/*</div>*/}
+            <main className="grid grid-cols-global_view">
+                <aside>
+                {creator && contentLoaded && <Role key={90000} roleUser={creator} role='Project Creator' />}
+                {roles.length > 0 && roles.map(role => (
+                    <Role key={role.id} roleUser={role.user} role={role.role}/>
+                    ))
+                }
+                {contentLoaded &&
+                <button className="text-xlg w-full global-btn-styling m-auto fade-in" >Propose New Role</button>
+                }
+                </aside>
+                <section>
+                    {projectData && <ProjectView projectData={projectData} />}
+                </section>
+            </main>
         </>
     )
 }

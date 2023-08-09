@@ -78,6 +78,8 @@ input, textarea{
 }
 .global-btn-styling:hover{
     cursor: pointer;
+    background-color: hsla(37, 8%, 34%, 1);
+    /*transition: background-color 200ms ease-in-out;*/
 }
 
 .dashboard-grid{
@@ -85,6 +87,17 @@ input, textarea{
     grid-template-columns: 2fr 1fr;
 }
 
+@keyframes fade-in {
+   0%{
+       opacity: 0
+   }
+    100%{
+        opacity: 1
+    }
+}
+.fade-in{
+    animation: fade-in 600ms ease-in
+}
 
 
 

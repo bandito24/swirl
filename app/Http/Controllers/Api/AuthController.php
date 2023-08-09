@@ -55,11 +55,11 @@ class AuthController extends Controller
                 ]);
 
                 foreach ($languages as $language) {
-                    $language = Language::where('name', $language)->firstOrFail();
-                    if($language) {
+                    $languageInstance = Language::where('name', $language)->first();
+                    if($languageInstance) {
                         UserLanguage::create([
                             'user_id'     => $user->id,
-                            'language_id' => $language->id
+                            'language_id' => $languageInstance->id
                         ]);
 
                     }

@@ -58,21 +58,25 @@ class User extends Authenticatable
      */
     protected $guarded = [];
 
-    public function setProfilePictureAttribute($image){
-        if($image){
-            $uniqueFilename = uniqid() . '.' . $image->extension();
-            $path = $image->storeAs('profile_picture', $uniqueFilename);
-            $this->attributes['profile_picture'] = $path;
-        }
+    //RESTORE THIS BELOW
+//    public function setProfilePictureAttribute($image){
+//        if($image){
+//            $uniqueFilename = uniqid() . '.' . $image->extension();
+//            $path = $image->storeAs('profile_picture', $uniqueFilename);
+//            $this->attributes['profile_picture'] = $path;
+//        }
+//
+//    }
+//    public function getProfilePictureAttribute($url){
+//        if($url){
+//            return url('/storage/' . $url);
+//        }
+//        return null;
+//    }
 
-    }
 
-    public function getProfilePictureAttribute($url){
-        if($url){
-            return url('/storage/' . $url);
-        }
-        return null;
-    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

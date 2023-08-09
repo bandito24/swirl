@@ -5,9 +5,9 @@ export default function returnLanguages(){
     ];
 }
 
-export const extractLanguageNames = (project) => {
+export const extractLanguageNames = (projectOrUser) => {
     const array = []
-    project.languages.forEach(lang => {
+    projectOrUser.languages.forEach(lang => {
         array.push(lang.name)
     })
     return array.join(', ');

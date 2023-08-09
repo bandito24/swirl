@@ -8,6 +8,7 @@ import Logout from "./views/Logout.jsx";
 import SignIn from "./views/signIn.jsx";
 import Welcome from "./views/Welcome.jsx";
 import Project from "./views/Project.jsx";
+import Home from "./views/Home.jsx";
 
 
 const router = createBrowserRouter([
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
         path: '/',
         element: <UserLayout/>,
         children: [
+            {
+                path: '/',
+                element: <Home/>
+            },
+
             {
                 path: '/dashboard',
                 element: <Dashboard/>
