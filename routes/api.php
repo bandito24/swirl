@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::post('/create_project', [ProjectController::class, 'store']);
-    Route::get('/show_language_projects', [ProjectController::class, 'indexByUserLanguage']);
+    Route::post('/show_language_projects', [ProjectController::class, 'indexByUserLanguage']);
 
 
 

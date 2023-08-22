@@ -4,7 +4,8 @@ import axiosClient from "../services/axios-client.js";
 import {extractLanguageNames} from "../functions/returnLanguages.js";
 import ProjectPreview from "../components/ProjectPreview.jsx";
 import NextBackButtons from "../components/NextBackButtons.jsx";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import SearchCategories from "../components/SearchCategories.jsx";
 
 
 export default function Home() {
@@ -12,6 +13,12 @@ export default function Home() {
     const {user} = useStateContext()
     const [projectList, setProjectList] = useState([])
     const [pageMeta, setPageMeta] = useState({});
+    const [languages, setLanguages] = useState(()=> {
+        if(user){
+            const langs = user.languages.map(obj => obj.slug)
+            return langs;
+        }
+    })
 
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -24,11 +31,14 @@ export default function Home() {
 
     useEffect(()=> {
         const fetchUserLanguageProjects = async() => {
+
             try{
-            const response = await axiosClient.get(`/show_language_projects?page=${pageNumber}`);
+            const response = await axiosClient.post(`/show_language_projects?page=${pageNumber}`, {
+                languages: languages
+            });
             // console.log(response.data.userLanguageProjects)
             setProjectList(response.data.userLanguageProjects.data)
-
+console.log(user)
             if(Object.keys(pageMeta).length < 1){
                 const pageInfo = response.data.userLanguageProjects
                 setPageMeta({
@@ -46,23 +56,28 @@ export default function Home() {
                 console.error(error)
             }
         }
+
         fetchUserLanguageProjects();
-    }, [pageNumber])
+    }, [pageNumber, languages])
 
 
 
     return(
     <>
-        {<NextBackButtons
+        <SearchCategories
+        languages={languages}
+        setLanguages={setLanguages}
+        />
+        <NextBackButtons
             setPageNumber={setPageNumber}
             pageNumber={pageNumber}
             lastPage={pageMeta.last_page}
             navigate={navigate}
-        />}
-        <h1 className="text-2xl" >hi</h1>
-        <p className="mb-20" >Projects using {extractLanguageNames(user)}</p>
+        />
+        <h1 className="text-2xl" >Suggested For You</h1>
+        <p className="mb-20" > (Projects using {languages.join(', ')})</p>
 
-        {projectList.length > 0 && <ProjectPreview projectList={projectList}/>}
+        {projectList.length > 0 && <ProjectPreview languages={languages} projectList={projectList}/>}
     </>
     )
 }

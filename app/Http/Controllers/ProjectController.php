@@ -59,7 +59,9 @@ class ProjectController extends Controller
     }
 
     public function indexByUserLanguage(Request $request){
-        $languages = Auth::user()->languages;
+        $languages = $request['languages'];
+
+//        $languages = Auth::user()->languages;
 
         $userLanguageProjects = Project::filterByLanguages($languages)
             ->limit(100)
