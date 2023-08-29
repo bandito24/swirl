@@ -20,18 +20,19 @@ export default function SearchCategories({languages, setLanguages}) {
 
     }
 
+
     return(
     <div className="absolute" >
-    <h1
+    <h1 className="cursor-pointer hover:underline rounded"
     onClick={()=> {
-        showLanguages === true ? setShowLanguages(false) : setShowLanguages(true);
+        setShowLanguages(!showLanguages)
     }}
-    >Show Languages</h1>
+    >{showLanguages ? 'Hide Languages' : 'Show Languages'}</h1>
     { showLanguages &&
     <ul
         className={`transform ${
             showLanguages ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
-        } absolute top-0 left-0 w-full bg-gray-300 p-4 transition-all duration-250 ease-in-out`}
+        } absolute top-7 left-0 w-full bg-gray-300 p-4 transition-all duration-250 ease-in-out`}
     >
 
         {languageOptions.map((option, index) => (
@@ -46,6 +47,7 @@ export default function SearchCategories({languages, setLanguages}) {
         }
     </ul>
     }
+
     </div>
     )
 }

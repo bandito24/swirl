@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function(){
 
 Route::get('/show_all_projects', [ProjectController::class, 'index']);
 Route::get('/project/{slug}', [ProjectController::class, 'show']);
+Route::post('/filter_by_title', [ProjectController::class, 'indexBySearch']);
 
 
 Route::post('/signup', [AuthController::class, 'signup']);

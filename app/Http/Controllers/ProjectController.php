@@ -61,14 +61,27 @@ class ProjectController extends Controller
     public function indexByUserLanguage(Request $request){
         $languages = $request['languages'];
 
-//        $languages = Auth::user()->languages;
-
         $userLanguageProjects = Project::filterByLanguages($languages)
             ->limit(100)
             ->paginate(25);
 
         $userLanguageProjects->load('languages');
         return response(compact('userLanguageProjects'));
+    }
+
+    public function indexBySearch(Request $request){
+        $search = $request['search'];
+
+        $filteredProjects = Project::query()
+            ->without(['roles', 'languages'])
+            ->where('project_name', 'LIKE', '% ' . $search . '%')
+            ->get();
+        $reducedProjects = $filteredProjects->take(15);
+
+        return response(['status' =>'success',
+        'filteredProjects' => $reducedProjects,
+            'count' => $filteredProjects->count()
+        ]);
     }
 
 }

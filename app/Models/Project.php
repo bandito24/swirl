@@ -16,11 +16,6 @@ class Project extends Model
     protected $with = ['roles', 'languages'];
 
 
-//    protected $dates = [
-//        'created_at',
-//        'updated_at',
-//        // your other new column
-//    ];
 
     public function getCreatedAtAttribute($value)
     {
@@ -39,7 +34,6 @@ class Project extends Model
     }
     public function scopeFilterByLanguages($query, $languages){
         return $query->whereHas('languages', fn($subQuery)=>
-//        $subQuery->whereIn('slug', $languages->pluck('slug'))
         $subQuery->whereIn('slug', $languages)
         );
     }

@@ -6,6 +6,7 @@ import ProjectPreview from "../components/ProjectPreview.jsx";
 import NextBackButtons from "../components/NextBackButtons.jsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import SearchCategories from "../components/SearchCategories.jsx";
+import SearchBar from "../components/SearchBar.jsx";
 
 
 export default function Home() {
@@ -64,6 +65,7 @@ console.log(user)
 
     return(
     <>
+        <SearchBar />
         <SearchCategories
         languages={languages}
         setLanguages={setLanguages}
