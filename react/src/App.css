@@ -1,6 +1,6 @@
 
 :root{
-    color: hsla(0, 30%, 95%, 1);
+    color: rgba(0,0,0,.8);
 }
 
 nav{
@@ -34,15 +34,18 @@ nav{
   text-align: center;
 }
 body{
-    background-color: hsla(189, 6%, 22%, 1);
+    /*background-color: hsla(189, 6%, 22%, 1);*/
+    background-color: rgb(255,255,255);
 }
 
 h1, h2, h3, h4, h5, h6{
-    color: hsla(180, 47%, 56%, 1);
+    /*color: hsla(180, 47%, 56%, 1);*/
+    color: rgba(0,0,0,.8);
 }
 
 p, label{
-    color: hsla(0, 30%, 95%, 1);
+    /*color: hsla(0, 30%, 95%, 1);*/
+    color: rgba(0,0,0,.8);
 }
 button{
     border: 2px solid hsla(37, 8%, 34%, 1);
@@ -61,7 +64,10 @@ button:hover{
     @apply text-red-500; /* Replace with the desired Tailwind color class */
 }
 
-
+.nav-svg-container:hover svg, .nav-svg-container:hover p{
+    fill: rgb(25,25,25);
+    color: rgb(25,25,25);
+}
 
 input, textarea{
     color: hsla(189, 6%, 22%, 1) !important;
@@ -69,6 +75,9 @@ input, textarea{
 
 .left_text{
     text-align: left !important;
+}
+.highlight-match{
+    background-color: hsla(37, 8%, 34%, .5);
 }
 
 .global-btn-styling{
@@ -98,6 +107,15 @@ input, textarea{
 .fade-in{
     animation: fade-in 600ms ease-in
 }
+
+
+#search-header{
+    background-color: white; /* Set background color to white */
+    background-image: url("../public/search-header.svg"); /* Specify the SVG as the background image */
+    background-repeat: no-repeat; /* Set the SVG not to repeat */
+    background-position: left center; /* Center the SVG, adjust as needed */
+}
+
 
 
 

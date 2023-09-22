@@ -13,6 +13,9 @@ export default {
             'global_view': '.7fr 3fr'
         },
         colors: {
+            main_theme: '#0492c2',
+            active_svg: 'rgb(25,25,25)',
+            inactive_svg: 'rgb(102, 102, 102)'
 
         },
         backgroundColor: {

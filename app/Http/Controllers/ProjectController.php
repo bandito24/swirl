@@ -58,24 +58,36 @@ class ProjectController extends Controller
         return response(compact('project'));
     }
 
-    public function indexByUserLanguage(Request $request){
-        $languages = $request['languages'];
+    public function indexByParameter(Request $request){
+        $languages = $request['languages'] ?? null;
+        $search = $request['search'] ?? null;
 
-        $userLanguageProjects = Project::filterByLanguages($languages)
-            ->limit(100)
+
+
+        $projects = Project::query();
+
+        if ($languages && count($languages) > 0) {
+            $projects->filterByLanguages($languages);
+        }
+        if ($search) {
+            $projects->filterBySearch($search);
+        }
+            $projects = $projects->limit(100)
             ->paginate(25);
 
-        $userLanguageProjects->load('languages');
-        return response(compact('userLanguageProjects'));
+        return response(compact('projects'));
     }
 
     public function indexBySearch(Request $request){
         $search = $request['search'];
 
+
+
         $filteredProjects = Project::query()
-            ->without(['roles', 'languages'])
-            ->where('project_name', 'LIKE', '% ' . $search . '%')
-            ->get();
+        ->without(['roles', 'languages'])
+        ->filterBySearch($search)
+           ->get();
+
         $reducedProjects = $filteredProjects->take(15);
 
         return response(['status' =>'success',

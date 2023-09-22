@@ -1,7 +1,7 @@
 import returnLanguages from "../functions/returnLanguages.js";
 import {useState} from "react";
 
-export default function SearchCategories({languages, setLanguages}) {
+export default function SearchCategories({languages, setLanguages, setFilterParameters, filterParameters}) {
     const [showLanguages, setShowLanguages] = useState(false);
     const languageOptions = returnLanguages();
 
@@ -10,14 +10,20 @@ export default function SearchCategories({languages, setLanguages}) {
     }
     const handleLanguageAdd = (e) => {
         const selectedLanguage = e.target.getAttribute('data-value');
+        let newLanguageArray;
         if(!isSelected(selectedLanguage)){
             setLanguages(prev => [
                 ...prev, selectedLanguage
             ])
+            newLanguageArray = languages.push(selectedLanguage)
         } else {
             setLanguages(prev => prev.filter(lang => lang !== selectedLanguage))
+            newLanguageArray = languages.filter(lang => lang !== selectedLanguage)
         }
 
+        setFilterParameters(prev => ({
+            ...prev, languages: newLanguageArray
+        }))
     }
 
 

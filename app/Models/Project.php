@@ -32,10 +32,14 @@ class Project extends Model
     public function languages(){
         return $this->belongsToMany(Language::class, 'project_languages', 'project_id', 'language_id');
     }
-    public function scopeFilterByLanguages($query, $languages){
-        return $query->whereHas('languages', fn($subQuery)=>
+    public function scopeFilterByLanguages($query, $languages, $search = null){
+        return $query->without(['roles'])
+        ->whereHas('languages', fn($subQuery)=>
         $subQuery->whereIn('slug', $languages)
         );
+    }
+    public function scopeFilterBySearch($query, $search){
+        return $query->where('project_name', 'REGEXP', '(^|\s)' . $search);
     }
 
 
